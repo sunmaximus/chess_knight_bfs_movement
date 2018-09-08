@@ -21,13 +21,13 @@ const listToMatrix = (list, elementsPerSubArray) => {
 }
 
 // https://stackoverflow.com/questions/3746725/create-a-javascript-array-containing-1-n
-let chess = (new Array(64)).fill(1);
+let chess = (new Array(64)).fill(0);
 
 // 8 x 8 matrix black and white chess board
 // console.log(listToMatrix(a, 8));
 
 // 8 x 8 matrix of 1
-// console.log(listToMatrix(chess, 8));
+console.log(listToMatrix(chess, 8));
 
 const cell = (x, y, dist) => ({ x, y, dist });
 const isInside = (x, y, N) => {
