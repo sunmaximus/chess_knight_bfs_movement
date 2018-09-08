@@ -1,7 +1,9 @@
 import collections
+import numpy as np
+from anytree import Node, RenderTree, Walker
+from anytree.exporter import DictExporter
 
-
-def check(self, grid, x, y, visited):
+def check(grid, x, y, visited):
     m, n = len(grid), len(grid[0])
     if x >= 0 and x < m and y >= 0 and y < n \
                 and (x, y) not in visited and not grid[x][y]:
@@ -10,48 +12,40 @@ def check(self, grid, x, y, visited):
         return False
 
 def ShortestPath(grid, source, destination):
+    tree_graph = {}
+    root_node = Node(str((source.x, source.y, 0)))
+    tree_graph[(source.x, source.y, 0)] = root_node
 
     queue = collections.deque([(source.x, source.y, 0)])
-
-    m, n = len(grid), len(grid[0])
     visited = set()
     dirs = [
-        (1,2),
-        (1,-2),
-        (-1,2),
-        (-1,-2),
-        (2,1),
-        (2,-1),
-        (-2,1),
-        (-2,-2)
+        (1,2),   #1
+        (1,-2),  #2
+        (-1,2),  #3
+        (-1,-2), #4
+        (2,1),   #5
+        (2,-1),  #6
+        (-2,1),  #7
+        (-2,-2)  #8
     ]
 
-
-  
     while queue:
         size = len(queue)
         for i in range(size):
             x, y, pathLen = queue.popleft()
-            if x == destination.x and y == destination.y:
-                # print(queue)
-                tx, ty, tpathLen = queue.popleft()
-                # print(x, y, pathLen)
-                # print(tx, ty, tpathLen)
-                return pathLen
+            if x == destination.x and y == destination.y:                
+                print(x, y, pathLen)
+                for pre, fill, node in RenderTree(root_node):
+                    print("%s%s" % (pre, node.name))
+                return (root_node, tree_graph, pathLen)
             
             for dx, dy in dirs:
                 nx = x + dx
                 ny = y + dy
 
-                nb = False
-
-                if x >= 0 and x < m and y >= 0 and y < n \
-                        and (x, y) not in visited and not grid[x][y]:
-                    nb = True
-
-                if nb:
+                if check(grid, x, y, visited):
                     if nx >= 0 and ny >= 0 and nx <= 7 and ny <= 7:
-                        print( (nx, ny, pathLen + 1), (x, y, pathLen) )
+                        tree_graph[(nx, ny, pathLen + 1)] = Node(str((nx, ny, pathLen + 1)), parent=tree_graph[(x, y, pathLen)])
 
                     queue.append((nx, ny, pathLen + 1))
                     visited.add((nx, ny, pathLen + 1))
@@ -59,22 +53,21 @@ def ShortestPath(grid, source, destination):
     return -1
 
 
-class Node:
+class node:
     def __init__(self, x, y):
         self.x = x
         self.y = y
 
 
-source = Node(1,1)
-target = Node(6,6)
+source = node(1,1)
+target = node(1,2)
 
-t = [ [ 0, 0, 0, 0, 0, 0, 0, 0 ],
-    [ 0, 0, 0, 0, 0, 0, 0, 0 ],
-    [ 0, 0, 0, 0, 0, 0, 0, 0 ],
-    [ 0, 0, 0, 0, 0, 0, 0, 0 ],
-    [ 0, 0, 0, 0, 0, 0, 0, 0 ],
-    [ 0, 0, 0, 0, 0, 0, 0, 0 ],
-    [ 0, 0, 0, 0, 0, 0, 0, 0 ],
-    [ 0, 0, 0, 0, 0, 0, 0, 0 ] ]
+chess_board_of_zeros = np.zeros((8,8), dtype=int).tolist()
+bin_tree, tree_dict, pathLen = ShortestPath(chess_board_of_zeros, source, target)
 
-a = ShortestPath(t, source, target)
+
+print(bin_tree, pathLen)
+print(tree_dict[(1,2,pathLen)])
+paths = str(tree_dict[(1,2,pathLen)])
+print(type(paths))
+print(paths)
