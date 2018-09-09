@@ -26,3 +26,7 @@ The Client App is written in ReactJS library.
 $ npm i
 $ npm run start
 ```
+
+<p>
+  <img  src="https://raw.githubusercontent.com/sunmaximus/chess_knight_bfs_movement/master/screenshot.png">
+</p>
