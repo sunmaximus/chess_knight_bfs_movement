@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-
 import '../css/cell.css'
 
 class Cell extends Component {
@@ -19,10 +18,10 @@ class Cell extends Component {
   }
 
   render() {
-    // const cellStyle = this.props.highLight ? 'cell-block-highlighted' : 'cell-block'
+    const { nodeLabel } = this.props;
     let cellStyle = this.props.black ? 'cell-block-black' : 'cell-block-white';
     cellStyle = `${cellStyle}${this.props.highLight ? '-block-highlighted' : ''}`
-    return <div className={cellStyle} onClick={this.clickCell}></div>
+    return <div className={cellStyle} onClick={this.clickCell}>{nodeLabel ? nodeLabel : ''}</div>
   }
 
 }

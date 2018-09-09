@@ -19,6 +19,7 @@ class ChessBoardContainer extends Component {
       keepTrack: 0,
       coordindates: [],
       grid: [...grid], // default block of 8 x 8 array of 0
+      gridClickedTracker: [...grid],
       foundShortestPath: false
     }
 
@@ -36,21 +37,30 @@ class ChessBoardContainer extends Component {
       keepTrack: 0,
       coordindates: [],
       grid: [...grid],
-      foundShortestPath: false
+      foundShortestPath: false,
+      pointA: [],
+      pointB: [],
     })
   }
 
   select(x,y) {
     if(this.state.grid[x][y] || this.state.keepTrack >= 2) return;
     this.setState((prevState) => { 
-      let grid = prevState.grid
+      let grid = prevState.grid;
+      let gridClickedTracker = prevState.gridClickedTracker;
       grid[x][y] = 1;
-      return {
-        keepTrack:
-        prevState.keepTrack + 1,
+
+      const newState = {
+        keepTrack: prevState.keepTrack + 1,
         grid,
+        gridClickedTracker,
         coordindates: [...prevState.coordindates, [x, y]]
       };
+
+      if (this.state.keepTrack == 0) newState['pointA'] = [x, y];
+      if (this.state.keepTrack == 1) newState['pointB'] = [x, y];
+
+      return newState;
     })
   }
 
@@ -60,7 +70,7 @@ class ChessBoardContainer extends Component {
 
     const host = 'http://localhost:5000/shortestpath';
 
-    coordindates.length > 1 &&
+    return coordindates.length > 1 &&
       axios.get(`${host}?start=[${coordindates[0]}]&end=[${coordindates[1]}]`)
         .then(response => {
           this.setState((prevState) => {
@@ -74,11 +84,15 @@ class ChessBoardContainer extends Component {
   }
 
   renderGrids() {
-    const { grid } = this.state;
+    const { grid, pointA, pointB } = this.state;
     let cells = []
-
     this.state.colorGrid.forEach((row, i) => {
-      cells = [...cells, ...row.map((isBlackCell, j) => (
+      cells = [...cells, ...row.map((isBlackCell, j) => {
+       let label = ''
+       if (grid[i][j] && JSON.stringify(pointA) === JSON.stringify([i, j])) label = 'A';
+       if (grid[i][j] && JSON.stringify(pointB) === JSON.stringify([i, j])) label = 'B';
+
+       return (
         <Cell
           key={`${i}${j}`}
           xCoordindate={i}
@@ -86,8 +100,9 @@ class ChessBoardContainer extends Component {
           black={isBlackCell}
           highLight={grid[i][j]}
           callBack={this.select}
-        />
-      ))]
+          nodeLabel={label}
+        />) 
+      })]
     })
     return (<div className='chess-board'>{cells}</div>)
   }
@@ -112,10 +127,16 @@ class ChessBoardContainer extends Component {
   }
 
   render() {
-    console.log(this.state.coordindates)
-
+    // console.log(this.state)
     return (
       <div>
+        <div className='instructions'>
+          <h1>Instructions</h1>
+          <div>Select any two square on the chess board</div>
+          <div>Click on ShortestPath button</div>
+          <div>Click Reset to start over again</div>
+        </div>
+
         {this.renderGrids()}
         {this.renderButtons()}
       </div>
