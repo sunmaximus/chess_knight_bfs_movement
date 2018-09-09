@@ -21,7 +21,7 @@ class Cell extends Component {
     const { nodeLabel } = this.props;
     let cellStyle = this.props.black ? 'cell-block-black' : 'cell-block-white';
     cellStyle = `${cellStyle}${this.props.highLight ? '-block-highlighted' : ''}`
-    return <div className={cellStyle} onClick={this.clickCell}>{nodeLabel ? nodeLabel : ''}</div>
+    return <div className={cellStyle} onClick={this.clickCell}>{nodeLabel}</div>
   }
 
 }
