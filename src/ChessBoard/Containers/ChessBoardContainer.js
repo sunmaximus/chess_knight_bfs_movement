@@ -68,7 +68,7 @@ class ChessBoardContainer extends Component {
     const { coordindates, foundShortestPath } = this.state;
     if (coordindates.length < 2 || foundShortestPath) return;
 
-    const host = 'http://localhost:5000/shortestpath';
+    const host = 'https://chess-shortest-path-bfs.herokuapp.com//shortestpath';
 
     return coordindates.length > 1 &&
       axios.get(`${host}?start=[${coordindates[0]}]&end=[${coordindates[1]}]`)
