@@ -12,7 +12,11 @@
           align-items: center;
 }
 
+.cell-block-black-block-highlighted, .cell-block-white-block-highlighted {
+  background: #ccae62;
+}
+
 .cell-block-black {
-  background: green;
+  background: #218c74;
 }
 /*# sourceMappingURL=cell.css.map */

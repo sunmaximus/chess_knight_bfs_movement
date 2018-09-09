@@ -6,6 +6,21 @@
       grid-template-columns: repeat(8, 1fr);
   -ms-grid-rows: (1fr)[8];
       grid-template-rows: repeat(8, 1fr);
-  border: 3px solid #bba9a9;
+  border: 3px solid #84817a;
+}
+
+.btn {
+  margin-top: 40px;
+  height: 50px;
+  width: 150px;
+}
+
+.btn-container {
+  width: 400px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
 }
 /*# sourceMappingURL=chessboard.css.map */

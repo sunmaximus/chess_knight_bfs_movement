@@ -8,7 +8,6 @@ class Cell extends Component {
     this.state = {
       xCoordindate: this.props.xCoordindate,
       yCoordindate: this.props.yCoordindate,
-      highLightOnClick: false,
     }
 
     this.clickCell = this.clickCell.bind(this)
@@ -21,7 +20,8 @@ class Cell extends Component {
 
   render() {
     // const cellStyle = this.props.highLight ? 'cell-block-highlighted' : 'cell-block'
-    const cellStyle = this.props.black ? 'cell-block-black' : 'cell-block-white';
+    let cellStyle = this.props.black ? 'cell-block-black' : 'cell-block-white';
+    cellStyle = `${cellStyle}${this.props.highLight ? '-block-highlighted' : ''}`
     return <div className={cellStyle} onClick={this.clickCell}></div>
   }
 
