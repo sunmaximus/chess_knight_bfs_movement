@@ -1,0 +1,11 @@
+.chess-board {
+  width: 400px;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[8];
+      grid-template-columns: repeat(8, 1fr);
+  -ms-grid-rows: (1fr)[8];
+      grid-template-rows: repeat(8, 1fr);
+  border: 3px solid #bba9a9;
+}
+/*# sourceMappingURL=chessboard.css.map */
