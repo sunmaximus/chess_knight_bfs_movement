@@ -1,5 +1,7 @@
 # Knight Shortest Path
 
+https://sunmaximus.github.io//chess_knight_bfs_movement/
+
 ## Description
 This is an implementation of finding knight shortest route from point A to point B
 using Breadth First Search (BFS).
