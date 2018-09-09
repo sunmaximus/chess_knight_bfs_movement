@@ -2,6 +2,7 @@ import collections
 import numpy as np
 from anytree import Node, RenderTree, Walker
 from anytree.exporter import DictExporter
+import re
 
 def check(grid, x, y, visited):
     m, n = len(grid), len(grid[0])
@@ -60,14 +61,20 @@ class node:
 
 
 source = node(1,1)
-target = node(1,2)
+target = node(6,6)
 
 chess_board_of_zeros = np.zeros((8,8), dtype=int).tolist()
 bin_tree, tree_dict, pathLen = ShortestPath(chess_board_of_zeros, source, target)
 
 
+
 print(bin_tree, pathLen)
-print(tree_dict[(1,2,pathLen)])
-paths = str(tree_dict[(1,2,pathLen)])
+print(tree_dict[(6,6,pathLen)])
+paths = str(tree_dict[(6,6,pathLen)])
 print(type(paths))
 print(paths)
+
+pattern = r"'(.+?)'"
+list_of_paths = re.findall(pattern, paths)[0][1:].split('/')
+list_of_paths = list(map(lambda x: eval(x), list_of_paths))
+print(list_of_paths)
