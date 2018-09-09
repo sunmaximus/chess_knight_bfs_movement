@@ -75,8 +75,13 @@ class ChessBoardContainer extends Component {
         .then(response => {
           this.setState((prevState) => {
             let grid = prevState.grid;
+            let steps = 0;
+            console.log(response.data.steps)
             response.data.steps.forEach(coordindate => {
-              grid[coordindate[0]][coordindate[1]] = 1;
+              const x = coordindate[0];
+              const y = coordindate[1];
+              steps += 1;
+              grid[x][y] = steps;
             })
             return { grid, foundShortestPath: true };
           })
@@ -85,12 +90,19 @@ class ChessBoardContainer extends Component {
 
   renderGrids() {
     const { grid, pointA, pointB } = this.state;
-    let cells = []
+    let cells = [];
+    let steps = 0;
     this.state.colorGrid.forEach((row, i) => {
       cells = [...cells, ...row.map((isBlackCell, j) => {
        let label = ''
-       if (grid[i][j] && JSON.stringify(pointA) === JSON.stringify([i, j])) label = 'A';
-       if (grid[i][j] && JSON.stringify(pointB) === JSON.stringify([i, j])) label = 'B';
+       const isLabelA = grid[i][j] && JSON.stringify(pointA) === JSON.stringify([i, j]);
+       const isLabelB = grid[i][j] && JSON.stringify(pointB) === JSON.stringify([i, j])
+       if (isLabelA) label = 'A';
+       if (isLabelB) label = 'B';
+       if (!isLabelA && !isLabelB && grid[i][j]) {
+         label = String(grid[i][j] - 1)
+       }
+
 
        return (
         <Cell
