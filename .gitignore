@@ -24,3 +24,4 @@ yarn-error.log*
 
 # python virtual env
 /chess
+/__pycache__
