@@ -21,6 +21,7 @@ yarn-debug.log*
 yarn-error.log*
 
 *.min.css
+*.requirements.txt.swp
 
 # python virtual env
 /chess
