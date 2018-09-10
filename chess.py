@@ -1,7 +1,6 @@
 import collections
 import numpy as np
-from anytree import Node, RenderTree, Walker
-from anytree.exporter import DictExporter
+from anytree import Node, RenderTree
 import re
 
 def check(grid, x, y, visited):

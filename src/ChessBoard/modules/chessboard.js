@@ -3,7 +3,7 @@
 export const initializeChessboardColor = () => {
   let a = [];
   for(var i=0; i< 64; i++) {
-    a.push(parseInt((i / 8) + i) % 2 == 0 ? 1 : 0)
+    a.push(parseInt((i / 8) + i) % 2 === 0 ? 1 : 0)
   }
 
   return a

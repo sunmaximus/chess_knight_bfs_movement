@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-import Cell from '../Components/Cell';
+import ButtonGroup from '../Components/ButtonGroup';
+import Grid from '../Components/Grid';
 import {
   colorChessBoard,
   chessBoardOfZeroes,
@@ -24,7 +25,6 @@ class ChessBoardContainer extends Component {
     }
 
     this.select = this.select.bind(this);
-    this.renderGrids = this.renderGrids.bind(this);
     this.shortestPath = this.shortestPath.bind(this);
     this.reset = this.reset.bind(this)
   }
@@ -57,8 +57,8 @@ class ChessBoardContainer extends Component {
         coordindates: [...prevState.coordindates, [x, y]]
       };
 
-      if (this.state.keepTrack == 0) newState['pointA'] = [x, y];
-      if (this.state.keepTrack == 1) newState['pointB'] = [x, y];
+      if (this.state.keepTrack === 0) newState['pointA'] = [x, y];
+      if (this.state.keepTrack === 1) newState['pointB'] = [x, y];
 
       return newState;
     })
@@ -76,7 +76,6 @@ class ChessBoardContainer extends Component {
           this.setState((prevState) => {
             let grid = prevState.grid;
             let steps = 0;
-            console.log(response.data.steps)
             response.data.steps.forEach(coordindate => {
               const x = coordindate[0];
               const y = coordindate[1];
@@ -88,57 +87,8 @@ class ChessBoardContainer extends Component {
         });
   }
 
-  renderGrids() {
-    const { grid, pointA, pointB } = this.state;
-    let cells = [];
-    let steps = 0;
-    this.state.colorGrid.forEach((row, i) => {
-      cells = [...cells, ...row.map((isBlackCell, j) => {
-       let label = ''
-       const isLabelA = grid[i][j] && JSON.stringify(pointA) === JSON.stringify([i, j]);
-       const isLabelB = grid[i][j] && JSON.stringify(pointB) === JSON.stringify([i, j])
-       if (isLabelA) label = 'A';
-       if (isLabelB) label = 'B';
-       if (!isLabelA && !isLabelB && grid[i][j]) {
-         label = String(grid[i][j] - 1)
-       }
-
-
-       return (
-        <Cell
-          key={`${i}${j}`}
-          xCoordindate={i}
-          yCoordindate={j}
-          black={isBlackCell}
-          highLight={grid[i][j]}
-          callBack={this.select}
-          nodeLabel={label}
-        />) 
-      })]
-    })
-    return (<div className='chess-board'>{cells}</div>)
-  }
-
-  renderButtons() {
-    return (
-      <div className='btn-container'>
-        <button
-          className='btn'
-          onClick={this.shortestPath}
-        >
-          Shortest Path
-        </button>
-        <button
-          className='btn'
-          onClick={this.reset}
-        >
-          Reset
-        </button>
-      </div>
-    );
-  }
-
   render() {
+    const { grid, pointA, pointB, colorGrid } = this.state;
     return (
       <div>
         <div className='instructions'>
@@ -148,8 +98,19 @@ class ChessBoardContainer extends Component {
           <div>Click Reset to start over again</div>
         </div>
 
-        {this.renderGrids()}
-        {this.renderButtons()}
+        <Grid 
+          grid={grid}
+          pointA={pointA}
+          pointB={pointB}
+          colorGrid={colorGrid}
+          select={this.select}
+        />
+        <ButtonGroup
+          containerClass={'btn-container'}
+          buttonClass={'btn'}
+          shortestPath={this.shortestPath}
+          reset={this.reset}
+        />
       </div>
 
     )
